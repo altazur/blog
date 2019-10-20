@@ -1,0 +1,9 @@
+<p>{{ post.text }}</p>
+{% for comment in post.comment_set.all %}
+	<div>
+		<p>{{comment.text}}<p>
+		<p>likes: {{comment.likes_amount}}</p>
+		<p>dislikes: {{comment.dislikes_amount}}</p>
+	</div>
+{% endfor %}
+

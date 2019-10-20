@@ -1,0 +1,11 @@
+{% if latest_post_list %}
+	{% for post in latest_post_list %}
+		<div>
+			<p>User: {{post.user}}</p>
+			<p>{{post.text}}</p>
+			<a href="{% url 'post' post.id %}">Detail...</a>
+		</div>
+	{% endfor %}
+{% else %}
+	<p>There is no posts</p>
+{% endif %}
