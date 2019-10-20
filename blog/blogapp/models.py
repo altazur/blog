@@ -5,22 +5,20 @@ from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class User(models.Model):
-    user_id = models.IntegerField()
-    user_name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
     last_login_date = models.DateTimeField()
     created_date = models.DateTimeField()
     blocked_until_date = models.DateTimeField()
 
     def __str__(self):
-        return self.user_name
+        return self.name
     
     def is_blocke(self):
         """Returns true if user blocked now"""
         return timezone.now() < self.blocked_until_date
 
 class Post(models.Model):
-    post_id = models.IntegerField()
-    post_text = models.TextField(max_length=512)
+    text = models.TextField(max_length=512)
     pub_date = models.DateTimeField('date published')
     likes_amount = models.IntegerField()
     dislikes_amount = models.IntegerField()
@@ -28,7 +26,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.post_id
+        return str(self.id)
 
     def was_published_recently(self):
         """Return true if the pub_date isn't more than 1 day"""
@@ -41,15 +39,14 @@ class Post(models.Model):
         pass
 
 class Comment(models.Model):
-    comment_text = models.TextField(max_length=256)
-    comment_id = models.IntegerField()
+    text = models.TextField(max_length=256)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     likes_amount = models.IntegerField()
     dislikes_amount = models.IntegerField()
     pub_date = models.DateTimeField('date published')
     
     def __str__(self):
-        return self.post_id
+        return str(self.id)
 
     def was_published_recently(self):
         """Return true if the pub_date isn't more than 1 day"""

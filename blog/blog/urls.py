@@ -13,9 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+from blogapp import views
 
+app_name = 'blogapp'
 urlpatterns = [
+    #/admin for admin panel
     url(r'^admin/', admin.site.urls),
+    #/ for home page with posts
+    url(r'^$', views.HomeView.as_view(), name = 'home'),
+    #/1 for #1 post view
+    url(r'^(?P<pk>[0-9]+)/$', views.PostView.as_view(), name='post'),
 ]
