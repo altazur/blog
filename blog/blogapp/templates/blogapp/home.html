@@ -1,8 +1,15 @@
+<a href="{% url 'createpost' %}">Write Post</a>
 {% if latest_post_list %}
 	{% for post in latest_post_list %}
-		<div>
+		<div class='post'>
 			<p>User: {{post.user}}</p>
 			<p>{{post.text}}</p>
+			<p>likes: {{post.likes_amount}}<p>
+			<p>dislikes: {{post.dislikes_amount}}<p>
+			<p>Tags:
+			{% for tag in post.tag %}
+			{{tag}}
+			{% endfor %}</p>
 			<a href="{% url 'post' post.id %}">Detail...</a>
 		</div>
 	{% endfor %}

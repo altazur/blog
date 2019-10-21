@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^$', views.HomeView.as_view(), name = 'home'),
     #/1 for #1 post view
     url(r'^(?P<pk>[0-9]+)/$', views.PostView.as_view(), name='post'),
+    url(r'^createpost/$', views.create_post, name='createpost'),
 ]
