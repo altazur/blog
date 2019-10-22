@@ -2,21 +2,9 @@ from django.db import models
 import datetime
 from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth.models import User
 
 # Create your models here.
-class User(models.Model):
-    name = models.CharField(max_length=200)
-    last_login_date = models.DateTimeField()
-    created_date = models.DateTimeField()
-    blocked_until_date = models.DateTimeField()
-
-    def __str__(self):
-        return self.name
-    
-    def is_blocke(self):
-        """Returns true if user blocked now"""
-        return timezone.now() < self.blocked_until_date
-
 class Post(models.Model):
     text = models.TextField(max_length=512)
     pub_date = models.DateTimeField('date published')

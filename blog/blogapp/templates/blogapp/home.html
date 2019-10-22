@@ -1,3 +1,11 @@
+<div class="header">
+	{% if user.is_authenticated %}
+	<p>Hi, {{ user.username }}</p>
+	{% else %}
+	<a href="{% url 'login' %}">Login</a>
+	<a href="">Register</a>
+	{% endif %}
+</div>
 <a href="{% url 'createpost' %}">Write Post</a>
 {% if latest_post_list %}
 	{% for post in latest_post_list %}

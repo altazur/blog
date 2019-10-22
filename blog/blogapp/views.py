@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import User, Post, Comment
+from .models import Post, Comment
+from django.contrib.auth.models import User
 from django.db.models import F
 from django.views import generic
 from django.utils import timezone
@@ -26,8 +27,14 @@ def create_post(request):
     selected_text = request.POST.get('text', "")
     tags = request.POST.get('tags', "").split(',') 
     if selected_text is not "":
-        new_post = Post.objects.create(text=selected_text, pub_date=timezone.now(), likes_amount=0, dislikes_amount=0, tag=tags, user=User.objects.get(pk=1))
+        new_post = Post.objects.create(text=selected_text, pub_date=timezone.now(), likes_amount=0, dislikes_amount=0, tag=tags, user=request.user)
         new_post.save()
         return HttpResponseRedirect(reverse('home'))
     else:
         return render(request, "blogapp/createpost.html", {'error_message':"You cannot write empty post"})
+
+def login(request):
+    pass
+
+def register(request):
+    pass
