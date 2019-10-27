@@ -6,11 +6,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Post(models.Model):
-    text = models.TextField(max_length=512)
+    text = models.TextField(max_length=512, blank=False)
     pub_date = models.DateTimeField('date published')
     likes_amount = models.IntegerField()
     dislikes_amount = models.IntegerField()
-    tag = ArrayField(models.CharField(max_length=200), blank=True)
+    tag = ArrayField(models.CharField(max_length=200), blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -27,11 +27,12 @@ class Post(models.Model):
         pass
 
 class Comment(models.Model):
-    text = models.TextField(max_length=256)
+    text = models.TextField(max_length=256, blank=False)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     likes_amount = models.IntegerField()
     dislikes_amount = models.IntegerField()
     pub_date = models.DateTimeField('date published')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     
     def __str__(self):
         return str(self.id)

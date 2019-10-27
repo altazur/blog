@@ -1,9 +1,9 @@
 {% if error_message %}<p>{{ error_message }}</p>{% endif %}
 
-<form action="{% url 'createpost' %}" method="post">
+<form method="post">
 	{% csrf_token %}
-	<div class="textinput"><input type="text" maxlength="512" name="text"/></div>
+	<div class="textinput"><textarea maxlength="512" name="input_text" rows="50" cols="100"/>Enter post here...</textarea></div>
 	<input type="text" maxlength="256" name="tags"/>
-	<input type="submit" value="Done"/> 
+	<input type="submit" value="Post"/> 
 </form>
 	
