@@ -8,8 +8,8 @@ from django.contrib.auth.models import User
 class Post(models.Model):
     text = models.TextField(max_length=512, blank=False)
     pub_date = models.DateTimeField('date published')
-    likes_amount = models.IntegerField()
-    dislikes_amount = models.IntegerField()
+    likes_amount = models.IntegerField(default=0)
+    dislikes_amount = models.IntegerField(default=0)
     tag = ArrayField(models.CharField(max_length=200), blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -29,8 +29,8 @@ class Post(models.Model):
 class Comment(models.Model):
     text = models.TextField(max_length=256, blank=False)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    likes_amount = models.IntegerField()
-    dislikes_amount = models.IntegerField()
+    likes_amount = models.IntegerField(default=0)
+    dislikes_amount = models.IntegerField(default=0)
     pub_date = models.DateTimeField('date published')
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     

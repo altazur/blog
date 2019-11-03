@@ -1,7 +1,10 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'blogapp/stylesheet.css' %}" />
 {% if messages %}
 	<ul class="messages">
 		{%for message in messages %}
-			<li>{{message}}</li>
+			<li class="{{message.tags}}">{{message}}</li>
 		{% endfor %}
 	</ul>
 {%endif%}	
@@ -14,7 +17,10 @@
 	<a href="{% url 'register' %}">Register</a>
 	{% endif %}
 </div>
-<a href="{% url 'createpost' %}">Write Post</a>
+<a href="{% url 'createpost' %}" class="write-post">Write Post</a>
+<div class="row-posts">
+<div class="posts"></div>
+<div class="posts">
 {% if latest_post_list %}
 	{% for post in latest_post_list %}
 		<div class='post'>
@@ -33,3 +39,6 @@
 {% else %}
 	<p>There is no posts</p>
 {% endif %}
+</div>
+<div class="posts"></div>
+</div>

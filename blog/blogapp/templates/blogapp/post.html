@@ -1,3 +1,10 @@
+{% if messages %}
+	<ul class="messages">
+		{%for message in messages %}
+			<li class="{{message.tags}}">{{message}}</li>
+		{% endfor %}
+	</ul>
+{%endif%}	
 <p>{{ post.text }}</p>
 {% for comment in post.comment_set.all %}
 	<div>
@@ -7,11 +14,15 @@
 		<p>Was published: {{comment.pub_date}}</p>
 	</div>
 {% endfor %}
+{%if user.is_authenticated%}
 <div class="comment_create">
 	<form method="post">
 		{% csrf_token %}
 		<input type="text" maxlength="256"  name="input_text">
-		<input type="submit" value="Comment"
+		<input type="submit" value="Comment">
 	</form>
 </div>
+{%else%}
+<div class="user_warning"><p>Please login to write comments</p></div>
+{%endif%}
 

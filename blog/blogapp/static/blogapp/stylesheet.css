@@ -1,0 +1,37 @@
+.error{
+	background-color:red;
+}
+
+.header{
+	width:100%;
+	background-color:#66ff99;
+	display:inline;
+	padding:10px;
+	text-align: right;
+	float:left;
+	padding-left: 5px;
+}
+
+.posts{
+	width:33%;
+	float:left;
+	padding:15px;
+}
+
+.post{
+	border-style: solid;
+	margin: 15px;
+}
+
+a.write-post:link, a.write-post:visited{
+	background-color: #8c66ff;
+	color: white;
+	padding: 14px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+}
+
+a.write-post:hover, a.write-post:active{
+	background-color: #d966ff;
+}
