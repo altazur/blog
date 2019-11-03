@@ -1,3 +1,6 @@
+body{
+	background: white url("images/background-blue-soft.png");
+}
 .error{
 	background-color:red;
 }
@@ -5,20 +8,26 @@
 .header{
 	width:100%;
 	background-color:#66ff99;
-	display:inline;
-	padding:10px;
+	display:inline-block;
+	padding: 15px 5px 15px 3px;
 	text-align: right;
-	float:left;
-	padding-left: 5px;
 }
 
 .posts{
-	width:33%;
 	float:left;
 	padding:15px;
 }
 
+.posts.main{
+	width: 50%;
+}
+
+.posts.side{
+	width: 25%;
+}
+
 .post{
+	overflow-x:hidden;
 	border-style: solid;
 	margin: 15px;
 }
@@ -34,4 +43,31 @@ a.write-post:link, a.write-post:visited{
 
 a.write-post:hover, a.write-post:active{
 	background-color: #d966ff;
+}
+
+.comment{
+	border-style: solid;
+	margin: 10px;
+}
+
+p.post-header{
+	background-color: #66b3ff;
+	color: white;
+	font: bold;
+	margin-top: 0px;
+	padding: 5px 5px 5px 5px;
+}
+
+.post-footer{
+	font-size: 14px;
+	display: inline-flex;
+	background-color: #66b3ff;
+}
+
+.post-footer.item{
+	padding-right: 3px;
+}
+
+p.tags{
+	font-size:12px;
 }

@@ -1,5 +1,16 @@
-{% if error_message %}<p>{{ error_message }}</p>{% endif %}
+{% load static %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'blogapp/stylesheet.css' %}" />
+{% if error_message %}<p>{{ error_message }}</p>{% endif %}
+<div class="header">
+	{% if user.is_authenticated %}
+	<p>Hi, {{ user.username }}</p>
+	<a href="{% url 'logout' %}">Logout</a>
+	{% else %}
+	<a href="{% url 'login' %}">Login</a>
+	<a href="{% url 'register' %}">Register</a>
+	{% endif %}
+</div>
 <form method="post">
 	{% csrf_token %}
 	<div class="textinput"><textarea maxlength="512" name="input_text" rows="50" cols="100"/>Enter post here...</textarea></div>

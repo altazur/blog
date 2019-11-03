@@ -19,26 +19,28 @@
 </div>
 <a href="{% url 'createpost' %}" class="write-post">Write Post</a>
 <div class="row-posts">
-<div class="posts"></div>
-<div class="posts">
-{% if latest_post_list %}
-	{% for post in latest_post_list %}
-		<div class='post'>
-			<p>User: {{post.user}}</p>
-			<p>{{post.text}}</p>
-			<p>likes: {{post.likes_amount}}<p>
-			<p>dislikes: {{post.dislikes_amount}}<p>
-			<p>Tags:
-			{% for tag in post.tag %}
-			{{tag}}
-			{% endfor %}</p>
-			<p>Was published: {{post.pub_date}}</p>
-			<a href="{% url 'post' post.id %}">Detail...</a>
-		</div>
-	{% endfor %}
-{% else %}
-	<p>There is no posts</p>
-{% endif %}
-</div>
-<div class="posts"></div>
+	<div class="posts side"></div>
+	<div class="posts main">
+		{% if latest_post_list %}
+			{% for post in latest_post_list %}
+				<div class='post'>
+					<p class="post-header">User: {{post.user}}</p>
+					<p>{{post.text}}</p>
+					<p class="tags">Tags:
+						{% for tag in post.tag %}
+							{{tag}}
+						{% endfor %}</p>
+					<div class="post-footer">
+						<p class="post-footer item">Likes: {{post.likes_amount}}</p>
+						<p class="post-footer item">Dislikes: {{post.dislikes_amount}}</p>
+						<p class="post-footer item">Was published: {{post.pub_date}}</p>
+					</div>
+					<a href="{% url 'post' post.id %}" class="write-post">Detail...</a>
+				</div>
+			{% endfor %}
+		{% else %}
+			<p>There is no posts</p>
+		{% endif %}
+	</div>
+<div class="posts side"></div>
 </div>

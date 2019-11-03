@@ -1,3 +1,6 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'blogapp/stylesheet.css' %}" />
 {% if messages %}
 	<ul class="messages">
 		{%for message in messages %}
@@ -5,13 +8,24 @@
 		{% endfor %}
 	</ul>
 {%endif%}	
+<div class="header">
+	{% if user.is_authenticated %}
+	<p>Hi, {{ user.username }}</p>
+	<a href="{% url 'logout' %}">Logout</a>
+	{% else %}
+	<a href="{% url 'login' %}">Login</a>
+	<a href="{% url 'register' %}">Register</a>
+	{% endif %}
+</div>
 <p>{{ post.text }}</p>
 {% for comment in post.comment_set.all %}
-	<div>
+	<div class="comment">
 		<p>{{comment.text}}<p>
-		<p>likes: {{comment.likes_amount}}</p>
-		<p>dislikes: {{comment.dislikes_amount}}</p>
-		<p>Was published: {{comment.pub_date}}</p>
+		<div class="post-footer">
+			<p class="post-footer item">Likes: {{comment.likes_amount}}</p>
+			<p class="post-footer item">Dislikes: {{comment.dislikes_amount}}</p>
+			<p class="post-footer item">Was published: {{comment.pub_date}}</p>
+		</div>
 	</div>
 {% endfor %}
 {%if user.is_authenticated%}
