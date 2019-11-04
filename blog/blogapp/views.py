@@ -27,7 +27,7 @@ def post_view(request, post_id):
             comment.save()
             return HttpResponseRedirect('') 
         else:
-            messages.add_message(request, messages.WARNING, "Empy comment can't be added")
+            messages.add_message(request, messages.WARNING, "Empty comment can't be added")
             return render(request, 'blogapp/post.html', {'post':post})
     else:
         return render(request, 'blogapp/post.html', {'post':post})

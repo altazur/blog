@@ -70,3 +70,48 @@ class HomePageTests(TestCase):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "testtag")
+
+class PostViewTest(TestCase):
+
+    def test_no_comments(self):
+        """If there is no comments only post text should be seen"""
+        post_id = create_post("Post", -2, create_user(), tags=[])
+        response = self.client.get(reverse('post', args=(post_id,)))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Post")
+        self.assertQuerysetEqual(response.context['post'], ['<Post: '+str(post_id)+'>'])
+
+    def test_logged_out_user_coomment(self):
+        """Test that logged out user doesn't see the comment form and see the message 'Please login to write comment'"""
+        #TODO
+        pass
+    
+    def test_future_comment(self):
+        """If comment is in the future it should'nt be seen"""
+        test_user = create_user()
+        post = create_post("Post", -2, test_user, tags=[]) 
+        future_comment = create_comment("Test comment", post, 2, test_user)
+        response = self.client.get(reverse('post', args=(post.id,)))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Post")
+        self.assertNotContains(response, "Test comment")
+
+    def test_past_comment(self):
+        """If comment is in the past it should be seen"""
+        test_user = create_user()
+        post = create_post("Post", -2, test_user, tags=[]) 
+        past_comment = create_comment("Test comment", post, -1, test_user)
+        response = self.client.get(reverse('post', args=(post.id,)))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Post")
+        self.assertContains(response, "Test comment")
+
+    def test_hundred_comments(self):
+        """Write 100 comments. All should be displayed"""
+        test_user = create_user()
+        post = create_post("Post", -2, test_user, tags=[])
+        for i in range(100):
+            create_comment("Test comment", post, -i, test_user)
+        response = self.client.get(reverse('post', args=(post.id,)))
+        self.assertEquals(response.status_code, 200)
+        self.assertContains(response, "Test comment", count=100)
