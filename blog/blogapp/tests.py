@@ -54,14 +54,13 @@ class HomePageTests(TestCase):
         """Login and write 12 posts. 10 of them should be displayed"""
         post_ids = [0]*12
         user = create_user()
-        for i in range(0,11):
-            post = create_post("Post"+str(i), -1, user, ['test', 'test'])
+        for i in range(0,12):
+            post = create_post("Post"+str(i), -i, user, ['test', 'test'])
             post_ids[i] = post.id
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
         #Post objects are always +1 because there is some default "Post" even on empty page
         self.assertContains(response, "Post", count=11)
-        #TODO: as expected this assert is shit. Fails everytime. IDK why
         self.assertQuerysetEqual(response.context['latest_post_list'], ['<Post: '+str(post_ids[0])+'>','<Post: '+str(post_ids[1])+'>','<Post: '+str(post_ids[2])+'>','<Post: '+str(post_ids[3])+'>','<Post: '+str(post_ids[4])+'>','<Post: '+str(post_ids[5])+'>','<Post: '+str(post_ids[6])+'>','<Post: '+str(post_ids[7])+'>','<Post: '+str(post_ids[8])+'>','<Post: '+str(post_ids[9])+'>'])
 
     def test_tags(self):
