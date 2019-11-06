@@ -18,7 +18,7 @@
 	{% endif %}
 </div>
 <p>{{ post.text }}</p>
-{% for comment in post.comment_set.all %}
+{% for comment in comments%}
 	<div class="comment">
 		<p>{{comment.text}}<p>
 		<div class="post-footer">

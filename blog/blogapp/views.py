@@ -20,6 +20,7 @@ class HomeView(generic.ListView):
 
 def post_view(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
+    comments = post.comment_set.filter(pub_date__lte=timezone.now()).order_by('-pub_date')
     if request.method=='POST':
         input_text = request.POST.get('input_text')
         if input_text != "":
@@ -28,9 +29,9 @@ def post_view(request, post_id):
             return HttpResponseRedirect('') 
         else:
             messages.add_message(request, messages.WARNING, "Empty comment can't be added")
-            return render(request, 'blogapp/post.html', {'post':post})
+            return render(request, 'blogapp/post.html', {'post':post, 'comments':comments})
     else:
-        return render(request, 'blogapp/post.html', {'post':post})
+        return render(request, 'blogapp/post.html', {'post':post, 'comments':comments})
 
 def create_post(request):
     if request.method=='POST':
