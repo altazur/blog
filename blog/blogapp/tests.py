@@ -7,9 +7,12 @@ from django.urls import reverse
 
 # Create your tests here.
 # Utils methods
-def create_user(name="Test"):
+def create_user(name="Test", password="test"):
     """Create user with given name. 'Test' is the default one"""
-    return User.objects.create(username=name)
+    user = User.objects.create(username=name)
+    user.set_password(password)
+    user.save()
+    return user
 
 def create_post(post_text, days, user, tags):
     """Create post with given text, date and tags for user
@@ -38,7 +41,7 @@ class HomePageTests(TestCase):
         """Login and create a post with future time. It should'nt be visible"""
         create_post("FuturePost", 2, create_user(), tags=['test', 'test'])
         response = self.client.get(reverse('home'))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "There is no posts")
         self.assertQuerysetEqual(response.context['latest_post_list'], [])
 
@@ -80,11 +83,24 @@ class PostViewTest(TestCase):
         self.assertContains(response, "Post")
         self.assertEqual(str(response.context['post']), str(post_id)) 
 
-    def test_logged_out_user_coomment(self):
+    def test_logged_out_user_comment_warning(self):
         """Test that logged out user doesn't see the comment form and see the message 'Please login to write comment'"""
-        #TODO
-        pass
-    
+        test_user = create_user()
+        post = create_post("Post", -2, test_user, tags=[]) 
+        response = self.client.get(f"/{post.id}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "<form method='post'>")
+        self.assertContains(response, "Please login to write comments")
+
+    def test_empty_comment(self):
+        """Empty comment can't be send and warning is displayed"""
+        test_user = create_user("test", "Qwerty123")
+        post = create_post("Post", -2, test_user, tags=[]) 
+        self.client.login(username="test", password="Qwerty123")
+        response = self.client.post(f"/{post.id}/", {"input_text":""})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Empty comment can&#39;t be added")
+ 
     def test_future_comment(self):
         """If comment is in the future it should'nt be seen"""
         test_user = create_user()
@@ -112,5 +128,33 @@ class PostViewTest(TestCase):
         for i in range(100):
             create_comment("Test comment", post, -i, test_user)
         response = self.client.get(reverse('post', args=(post.id,)))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Test comment", count=100)
+
+class CreatePostView(TestCase):
+    
+    def test_create_post(self):
+        """Login and write post through POST. Post should be visible on the home page. After POST user is redirected to home page"""
+        create_user("test", "Qwerty123")
+        self.client.login(username="test", password="Qwerty123")
+        response = self.client.post("/createpost/", {'input_text':'TestPost', 'tags':['tag1','tag2']})
+        self.assertEqual(response.status_code, 302)
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'You must be logged in in order to write\\comment posts') 
+        self.assertContains(response, "TestPost")
+
+    def test_create_empty_post(self):
+        """Login and write an empty post. Error message is shown"""
+        response = self.client.post('/createpost/', {'input_text':'', 'tags':[]})
+        self.assertEqual(response.status_code, 200)
+        #Unicode symbol instead of "'"
+        self.assertContains(response, "Post can&#39;t be empty")
+
+    def test_create_post_logged_out(self):
+        """Do not login and trying to create a post. Error message is shown. Post isn't created"""
+        response = self.client.post('/createpost/', {'input_text':'TestPost', 'tags':['tag1','tag2']})
+        self.assertEqual(response.status_code, 302)
+        response = self.client.get("/")
+        self.assertContains(response, "You must be logged in in order to write\\comment posts")
+        self.assertNotContains(response, "TestPost")
