@@ -26,6 +26,14 @@ class Post(models.Model):
         """Returns true if the instance is the most likes_amountd post"""
         pass
 
+    def likes_add(self, post_id, amount):
+        """Function changes likes of given amount """
+        pass
+
+    def dislikes_add(self, post_id, amount):
+        """Function change dislikes of given post with amount"""
+        pass
+
 class Comment(models.Model):
     text = models.TextField(max_length=256, blank=False)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -45,4 +53,12 @@ class Comment(models.Model):
 
     def most_liked(self):
         """Returns true if the instance is the most likes_amountd post"""
+        pass
+
+    def likes_add(self, comment_id, amount):
+        """Function changes likes of given amount """
+        pass
+
+    def dislikes_add(self, post_id, amount):
+        """Function change dislikes of given comment with amount"""
         pass

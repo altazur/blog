@@ -26,7 +26,15 @@ def create_comment(comment_text, post, days, user):
     Negative days stands for past from now comments
     Positive days is future from now"""
     time = timezone.now() + datetime.timedelta(days=days)
-    post.comment_set.create(text=comment_text, post=post, pub_date=time, user=user)
+    return post.comment_set.create(text=comment_text, post=post, pub_date=time, user=user)
+
+def prepare_quick_post():
+    """Quick post function"""
+    return create_post("TestLikesPost", -2, create_user(name="QuickPostUser", password="test"), tags=[])
+
+def prepare_quick_comment():
+    """Quick comment function"""
+    return create_comment("TestLikesComment", prepare_quick_post(), -2, create_user(name="QuickCommentUser", password="test"))
 
 class HomePageTests(TestCase):
     
@@ -158,3 +166,167 @@ class CreatePostView(TestCase):
         response = self.client.get("/")
         self.assertContains(response, "You must be logged in in order to write\\comment posts")
         self.assertNotContains(response, "TestPost")
+
+class LikesTest(TestCase):
+
+    def test_add_likes_to_post(self):
+        """Adding likes to post and assert quantity"""
+        post = prepare_quick_post()
+        post.likes_add(post.id, 2)
+        self.assertEqual(post.likes_amount, 2)
+
+    def test_add_likes_to_comment(self):
+        """Adding likes to comment and assert quantity"""
+        comment = prepare_quick_comment()
+        comment.likes_add(comment.id, 2)
+        self.assertEqual(comment.likes_amount, 2)
+
+    def test_add_zero_likes_to_post(self):
+        """Adding zero amount of likes. Assert that likes amount isn't changed"""
+        """This test is pass even witn placeholder func"""
+        post = prepare_quick_post()
+        post.likes_amount = 5
+        post_likes_before = post.likes_amount
+        post.likes_add(post.id, 0)
+        self.assertEqual(post.likes_amount, post_likes_before)
+
+    def test_add_zero_likes_to_comment(self):
+        """Adding zero likes to comment. Assert that likes amount isn't changed"""
+        """This test is pass even witn placeholder func"""
+        comment = prepare_quick_comment()
+        comment.likes_before = 5
+        comment_likes_before = comment.likes_amount
+        comment.likes_add(comment.id, 0)
+        self.assertEqual(comment.likes_amount, comment_likes_before)
+
+    def test_neg_likes_to_post(self):
+        """Adding negative likes to post. Assert that likes aren't changed"""
+        """This test is pass even witn placeholder func"""
+        post = prepare_quick_post()
+        post_likes_before = post.likes_amount
+        post.likes_add(post.id, -99)
+        self.assertEqual(post.likes_amount, post_likes_before)
+
+    def test_neg_likes_to_comment(self):
+        """Adding negative likes to comment. Assert that likes aren't changed"""
+        """This test is pass even witn placeholder func"""
+        comment = prepare_quick_comment()
+        comment_likes_before = comment.likes_amount
+        comment.likes_add(comment.id, -5)
+        self.assertEqual(comment.likes_amount, comment_likes_before)
+
+    def test_big_likes_to_post(self):
+        """Adding huge numbers of likes to post. Assert that likes amount is changed correctly"""
+        post = prepare_quick_post()
+        base_likes = 6
+        post.likes_amount = base_likes 
+        post.likes_add(post.id, 1000)
+        self.assertEqual(post.likes_amount, base_likes+1000)
+
+    def test_big_likes_to_comment(self):
+        """Adding huge numbers of likes to comment. Assert that likes amount is changed correctly"""
+        comment = prepare_quick_comment()
+        base_likes = 25
+        comment.likes_amount = base_likes
+        comment.likes_add(comment.id, 999)
+        self.assertEqual(comment.likes_amount, base_likes+999)
+
+    def test_post_likes_view(self):
+        """Assert that page contains right amount of likes after post.likes_add()"""
+        post = prepare_quick_post()
+        post.likes_add(post.id, 256)
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Likes: 256")
+
+    def test_comment_likes_view(self):
+        """Assert that postview contains right amount of likes for comment"""
+        #Using 'classic' way to prepare comment in order to obtain post.id
+        post = prepare_quick_post()
+        comment = create_comment("TestComment", post, -2, create_user())
+        comment.likes_add(comment.id, 999)
+        response = self.client.get(f"/{post.id}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Likes: 999")
+
+class DislikesTest(TestCase):
+
+    def test_add_dislikes_to_post(self):
+        """Adding dislikes to post and assert quantity"""
+        post = prepare_quick_post()
+        post.dislikes_add(post.id, 2)
+        self.assertEqual(post.dislikes_amount, 2)
+
+    def test_add_dislikes_to_comment(self):
+        """Adding dislikes to comment and assert quantity"""
+        comment = prepare_quick_comment()
+        comment.dislikes_add(comment.id, 2)
+        self.assertEqual(comment.dislikes_amount, 2)
+
+    def test_add_zero_dislikes_to_post(self):
+        """Adding zero amount of dislikes. Assert that likes amount isn't changed"""
+        """This test is pass even witn placeholder func"""
+        post = prepare_quick_post()
+        post.dislikes_amount = 5
+        post_dislikes_before = post.likes_amount
+        post.dislikes_add(post.id, 0)
+        self.assertEqual(post.dislikes_amount, post_dislikes_before)
+
+    def test_add_zero_dislikes_to_comment(self):
+        """Adding zero dislikes to comment. Assert that likes amount isn't changed"""
+        """This test is pass even witn placeholder func"""
+        comment = prepare_quick_comment()
+        comment.dislikes_amount = 6
+        comment_dislikes_before = comment.likes_amount
+        comment.dislikes_add(comment.id, 0)
+        self.assertEqual(comment.dislikes_amount, comment_dislikes_before)
+
+    def test_neg_dislikes_to_post(self):
+        """Adding negative dislikes to post. Assert that likes aren't changed"""
+        """This test is pass even witn placeholder func"""
+        post = prepare_quick_post()
+        post_dislikes_before = post.likes_amount
+        post.dislikes_add(post.id, -99)
+        self.assertEqual(post.dislikes_amount, post_dislikes_before)
+
+    def test_neg_dislikes_to_comment(self):
+        """Adding negative dislikes to comment. Assert that likes aren't changed"""
+        """This test is pass even witn placeholder func"""
+        comment = prepare_quick_comment()
+        comment_dislikes_before = comment.likes_amount
+        comment.dislikes_add(comment.id, -5)
+        self.assertEqual(comment.dislikes_amount, comment_dislikes_before)
+
+    def test_big_dislikes_to_post(self):
+        """Adding huge numbers of dislikes to post. Assert that likes amount is changed correctly"""
+        post = prepare_quick_post()
+        base_dislikes = 6
+        post.dislikes_amount = base_dislikes 
+        post.dislikes_add(post.id, 1000)
+        self.assertEqual(post.dislikes_amount, base_dislikes+1000)
+
+    def test_big_dislikes_to_comment(self):
+        """Adding huge numbers of dislikes to comment. Assert that likes amount is changed correctly"""
+        comment = prepare_quick_comment()
+        base_dislikes = 25
+        comment.dislikes_amount = base_dislikes
+        comment.dislikes_add(comment.id, 999)
+        self.assertEqual(comment.dislikes_amount, base_dislikes+999)
+
+    def test_post_dislikes_view(self):
+        """Assert that page contains right amount of dislikes after post.likes_add()"""
+        post = prepare_quick_post()
+        post.dislikes_add(post.id, 256)
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Likes: 256")
+
+    def test_comment_dislikes_view(self):
+        """Assert that postview contains right amount of dislikes for comment"""
+        #Using 'classic' way to prepare comment in order to obtain post.id
+        post = prepare_quick_post()
+        comment = create_comment("TestComment", post, -2, create_user())
+        comment.dislikes_add(comment.id, 999)
+        response = self.client.get(f"/{post.id}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Likes: 999")
