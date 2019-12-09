@@ -22,7 +22,13 @@
 	<div class="comment">
 		<p>{{comment.text}}<p>
 		<div class="post-footer">
+			{% if user.is_authenticated %}
+				<a href="" class="like">+</a>
+			{% endif %}
 			<p class="post-footer item">Likes: {{comment.likes_amount}}</p>
+			{% if user.is_authenticated %}
+				<a href="" class="like">-</a>
+			{% endif %}
 			<p class="post-footer item">Dislikes: {{comment.dislikes_amount}}</p>
 			<p class="post-footer item">Was published: {{comment.pub_date}}</p>
 		</div>
