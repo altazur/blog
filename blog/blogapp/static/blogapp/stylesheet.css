@@ -45,6 +45,17 @@ a.write-post:hover, a.write-post:active{
 	background-color: #d966ff;
 }
 
+.like, .dislike{
+	background-color: #8c66ff;
+	border: none;
+	color: white;
+	padding: 0px 9px 9px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 30;
+}
+
 .comment{
 	border-style: solid;
 	margin: 10px;
