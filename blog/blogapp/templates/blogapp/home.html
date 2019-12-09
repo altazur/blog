@@ -1,5 +1,7 @@
 {% load static %}
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="{% static 'blogapp/stylesheet.css' %}" />
 {% if messages %}
 	<ul class="messages">
@@ -32,11 +34,11 @@
 						{% endfor %}</p>
 					<div class="post-footer">
 						{% if user.is_authenticated %}
-							<a href="" class="like">+</a>
+						<button class="like">+</button>
 						{% endif %}
 						<p class="post-footer item">Likes: {{post.likes_amount}}</p>
 						{% if user.is_authenticated %}
-							<a href="" class="like">-</a>
+						<button class="dislike">-</button>
 						{% endif %}
 						<p class="post-footer item">Dislikes: {{post.dislikes_amount}}</p>
 						<p class="post-footer item">Was published: {{post.pub_date}}</p>
