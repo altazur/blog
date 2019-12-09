@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import F
 import datetime
 from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField
@@ -28,11 +29,16 @@ class Post(models.Model):
 
     def likes_add(self, post_id, amount):
         """Function changes likes of given amount """
-        pass
+        if post_id is not None and amount > 0:
+            #Using 'F' to prevent race
+            self.likes_amount = F('likes_amount')+amount
+            self.save()
 
     def dislikes_add(self, post_id, amount):
         """Function change dislikes of given post with amount"""
-        pass
+        if post_id is not None and amount > 0:
+            self.dislikes_amount = F('dislikes_amount')+amount
+            self.save()
 
 class Comment(models.Model):
     text = models.TextField(max_length=256, blank=False)
@@ -57,8 +63,12 @@ class Comment(models.Model):
 
     def likes_add(self, comment_id, amount):
         """Function changes likes of given amount """
-        pass
+        if comment_id is not None and amount > 0:
+            self.likes_amount = F('likes_amount')+amount
+            self.save()
 
-    def dislikes_add(self, post_id, amount):
+    def dislikes_add(self, comment_id, amount):
         """Function change dislikes of given comment with amount"""
-        pass
+        if comment_id is not None and amount > 0:
+            self.dislikes_amount = F('dislikes_amount')+amount
+            self.save()
