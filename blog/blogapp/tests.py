@@ -173,12 +173,14 @@ class LikesTest(TestCase):
         """Adding likes to post and assert quantity"""
         post = prepare_quick_post()
         post.likes_add(post.id, 2)
+        post.refresh_from_db()
         self.assertEqual(post.likes_amount, 2)
 
     def test_add_likes_to_comment(self):
         """Adding likes to comment and assert quantity"""
         comment = prepare_quick_comment()
         comment.likes_add(comment.id, 2)
+        comment.refresh_from_db()
         self.assertEqual(comment.likes_amount, 2)
 
     def test_add_zero_likes_to_post(self):
@@ -186,8 +188,10 @@ class LikesTest(TestCase):
         """This test is pass even witn placeholder func"""
         post = prepare_quick_post()
         post.likes_amount = 5
+        post.save()
         post_likes_before = post.likes_amount
         post.likes_add(post.id, 0)
+        post.refresh_from_db()
         self.assertEqual(post.likes_amount, post_likes_before)
 
     def test_add_zero_likes_to_comment(self):
@@ -197,6 +201,7 @@ class LikesTest(TestCase):
         comment.likes_before = 5
         comment_likes_before = comment.likes_amount
         comment.likes_add(comment.id, 0)
+        comment.refresh_from_db()
         self.assertEqual(comment.likes_amount, comment_likes_before)
 
     def test_neg_likes_to_post(self):
@@ -205,6 +210,7 @@ class LikesTest(TestCase):
         post = prepare_quick_post()
         post_likes_before = post.likes_amount
         post.likes_add(post.id, -99)
+        post.refresh_from_db()
         self.assertEqual(post.likes_amount, post_likes_before)
 
     def test_neg_likes_to_comment(self):
@@ -213,6 +219,7 @@ class LikesTest(TestCase):
         comment = prepare_quick_comment()
         comment_likes_before = comment.likes_amount
         comment.likes_add(comment.id, -5)
+        comment.refresh_from_db()
         self.assertEqual(comment.likes_amount, comment_likes_before)
 
     def test_big_likes_to_post(self):
@@ -220,7 +227,9 @@ class LikesTest(TestCase):
         post = prepare_quick_post()
         base_likes = 6
         post.likes_amount = base_likes 
+        post.save()
         post.likes_add(post.id, 1000)
+        post.refresh_from_db()
         self.assertEqual(post.likes_amount, base_likes+1000)
 
     def test_big_likes_to_comment(self):
@@ -228,13 +237,16 @@ class LikesTest(TestCase):
         comment = prepare_quick_comment()
         base_likes = 25
         comment.likes_amount = base_likes
+        comment.save()
         comment.likes_add(comment.id, 999)
+        comment.refresh_from_db()
         self.assertEqual(comment.likes_amount, base_likes+999)
 
     def test_post_likes_view(self):
         """Assert that page contains right amount of likes after post.likes_add()"""
         post = prepare_quick_post()
         post.likes_add(post.id, 256)
+        post.refresh_from_db()
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Likes: 256")
@@ -245,6 +257,7 @@ class LikesTest(TestCase):
         post = prepare_quick_post()
         comment = create_comment("TestComment", post, -2, create_user())
         comment.likes_add(comment.id, 999)
+        comment.refresh_from_db()
         response = self.client.get(f"/{post.id}/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Likes: 999")
@@ -255,12 +268,14 @@ class DislikesTest(TestCase):
         """Adding dislikes to post and assert quantity"""
         post = prepare_quick_post()
         post.dislikes_add(post.id, 2)
+        post.refresh_from_db()
         self.assertEqual(post.dislikes_amount, 2)
 
     def test_add_dislikes_to_comment(self):
         """Adding dislikes to comment and assert quantity"""
         comment = prepare_quick_comment()
         comment.dislikes_add(comment.id, 2)
+        comment.refresh_from_db()
         self.assertEqual(comment.dislikes_amount, 2)
 
     def test_add_zero_dislikes_to_post(self):
@@ -270,6 +285,7 @@ class DislikesTest(TestCase):
         post.dislikes_amount = 5
         post_dislikes_before = post.likes_amount
         post.dislikes_add(post.id, 0)
+        post.refresh_from_db()
         self.assertEqual(post.dislikes_amount, post_dislikes_before)
 
     def test_add_zero_dislikes_to_comment(self):
@@ -279,6 +295,7 @@ class DislikesTest(TestCase):
         comment.dislikes_amount = 6
         comment_dislikes_before = comment.likes_amount
         comment.dislikes_add(comment.id, 0)
+        comment.refresh_from_db()
         self.assertEqual(comment.dislikes_amount, comment_dislikes_before)
 
     def test_neg_dislikes_to_post(self):
@@ -287,6 +304,7 @@ class DislikesTest(TestCase):
         post = prepare_quick_post()
         post_dislikes_before = post.likes_amount
         post.dislikes_add(post.id, -99)
+        post.refresh_from_db()
         self.assertEqual(post.dislikes_amount, post_dislikes_before)
 
     def test_neg_dislikes_to_comment(self):
@@ -295,6 +313,7 @@ class DislikesTest(TestCase):
         comment = prepare_quick_comment()
         comment_dislikes_before = comment.likes_amount
         comment.dislikes_add(comment.id, -5)
+        comment.refresh_from_db()
         self.assertEqual(comment.dislikes_amount, comment_dislikes_before)
 
     def test_big_dislikes_to_post(self):
@@ -302,7 +321,9 @@ class DislikesTest(TestCase):
         post = prepare_quick_post()
         base_dislikes = 6
         post.dislikes_amount = base_dislikes 
+        post.save()
         post.dislikes_add(post.id, 1000)
+        post.refresh_from_db()
         self.assertEqual(post.dislikes_amount, base_dislikes+1000)
 
     def test_big_dislikes_to_comment(self):
@@ -310,16 +331,19 @@ class DislikesTest(TestCase):
         comment = prepare_quick_comment()
         base_dislikes = 25
         comment.dislikes_amount = base_dislikes
+        comment.save()
         comment.dislikes_add(comment.id, 999)
+        comment.refresh_from_db()
         self.assertEqual(comment.dislikes_amount, base_dislikes+999)
 
     def test_post_dislikes_view(self):
         """Assert that page contains right amount of dislikes after post.likes_add()"""
         post = prepare_quick_post()
         post.dislikes_add(post.id, 256)
+        post.refresh_from_db()
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Likes: 256")
+        self.assertContains(response, "Dislikes: 256")
 
     def test_comment_dislikes_view(self):
         """Assert that postview contains right amount of dislikes for comment"""
@@ -327,6 +351,7 @@ class DislikesTest(TestCase):
         post = prepare_quick_post()
         comment = create_comment("TestComment", post, -2, create_user())
         comment.dislikes_add(comment.id, 999)
+        comment.refresh_from_db()
         response = self.client.get(f"/{post.id}/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Likes: 999")
+        self.assertContains(response, "Dislikes: 999")
