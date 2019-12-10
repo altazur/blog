@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post, Comment
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-frim django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from django.db.models import F
 from django.views import generic
 from django.utils import timezone
@@ -67,7 +67,7 @@ def like_post(request):
         post = Post.objects.get(pk=post_id)
         post.likes_add(post.id, 1)
         post.refresh_from_db()
-    return post.likes_amount
+    return HttpResponse(post.likes_amount)
 
 @login_required
 def dislike_post(request):
@@ -77,7 +77,7 @@ def dislike_post(request):
         post = Post.objects.get(pk=post_id)
         post.dislikes_add(post.id, 1)
         post.refresh_from_db()
-    return post.likes_amount
+    return HttpResponse(post.likes_amount)
 
 @login_required
 def like_comment(request):
@@ -87,7 +87,7 @@ def like_comment(request):
         comment = Comment.objects.get(pk=comment_id)
         comment.likes_add(comment.id, 1)
         comment.refresh_from_db()
-    return comment.likes_amount
+    return HttpResponse(comment.likes_amount)
 
 @login_required
 def dislike_comment(request):
@@ -97,4 +97,4 @@ def dislike_comment(request):
         comment = Comment.objects.get(pk=comment_id)
         comment.dislikes_add(comment.id, 1)
         comment.refresh_from_db()
-    return comment.dislikes_amount
+    return HttpResponse(comment.dislikes_amount)
