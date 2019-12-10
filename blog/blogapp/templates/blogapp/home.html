@@ -37,11 +37,11 @@
 						{% if user.is_authenticated %}
 						<button class="like" data-postid="{{ post.id }}" type="button">+</button>
 						{% endif %}
-						<p class="post-footer item">Likes: {{post.likes_amount}}</p>
+						<p class="post-footer item likes">Likes: {{post.likes_amount}}</p>
 						{% if user.is_authenticated %}
 						<button class="dislike" data-postid="{{ post.id }}" type="button">-</button>
 						{% endif %}
-						<p class="post-footer item">Dislikes: {{post.dislikes_amount}}</p>
+						<p class="post-footer item dislikes">Dislikes: {{post.dislikes_amount}}</p>
 						<p class="post-footer item">Was published: {{post.pub_date}}</p>
 					</div>
 					<a href="{% url 'post' post.id %}" class="write-post">Detail...</a>
