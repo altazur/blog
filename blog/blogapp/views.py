@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post, Comment
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+frim django.contrib.auth.decorators import login_required
 from django.db.models import F
 from django.views import generic
 from django.utils import timezone
@@ -57,3 +58,43 @@ class Register(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/registration.html'
+
+@login_required
+def like_post(request):
+    if request.method == 'GET':
+        post_id = request.GET['post_id']
+    if post_id is not None:
+        post = Post.objects.get(pk=post_id)
+        post.likes_add(post.id, 1)
+        post.refresh_from_db()
+    return post.likes_amount
+
+@login_required
+def dislike_post(request):
+    if request.method == 'GET':
+        post_id = request.GET['post_id']
+    if post_id is not None:
+        post = Post.objects.get(pk=post_id)
+        post.dislikes_add(post.id, 1)
+        post.refresh_from_db()
+    return post.likes_amount
+
+@login_required
+def like_comment(request):
+    if request.method == 'GET':
+        comment_id = request.GET['comment_id']
+    if comment_id is not None:
+        comment = Comment.objects.get(pk=comment_id)
+        comment.likes_add(comment.id, 1)
+        comment.refresh_from_db()
+    return comment.likes_amount
+
+@login_required
+def dislike_comment(request):
+    if request.method == 'GET':
+        comment_id = request.GET['comment_id']
+    if comment_id is not None:
+        comment = Comment.objects.get(pk=comment_id)
+        comment.dislikes_add(comment.id, 1)
+        comment.refresh_from_db()
+    return comment.dislikes_amount

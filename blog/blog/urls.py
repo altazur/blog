@@ -28,4 +28,8 @@ urlpatterns = [
     url(r'^createpost/$', views.create_post, name='createpost'),
     url(r'^register/$', views.Register.as_view(), name='register'),
     url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^likepost/$', views.like_post, name='likepost'),
+    url(r'^dislikepost/$', views.dislike_post, name='dislikepost'),
+    url(r'^likecomment/$', views.like_comment, name='likecomment'),
+    url(r'^dislikecomment/$', views.dislike_comment, name='dislikecomment'),
 ]
