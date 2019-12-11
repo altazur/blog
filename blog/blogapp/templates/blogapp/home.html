@@ -35,13 +35,13 @@
 						{% endfor %}</p>
 					<div class="post-footer">
 						{% if user.is_authenticated %}
-						<button class="like" id="like" data-postid="{{ post.id }}" type="button">+</button>
+						<button class="like" id="like{{post.id}}" data-postid="{{ post.id }}" type="button">+</button>
 						{% endif %}
-						<p class="post-footer item" id="likes">Likes: {{post.likes_amount}}</p>
+						<p class="post-footer item" id="likes{{post.id}}">Likes: {{post.likes_amount}}</p>
 						{% if user.is_authenticated %}
-						<button class="dislike" id="dislike" data-postid="{{ post.id }}" type="button">-</button>
+						<button class="dislike" id="dislike{{post.id}}" data-postid="{{ post.id }}" type="button">-</button>
 						{% endif %}
-						<p class="post-footer item" id="dislikes">Dislikes: {{post.dislikes_amount}}</p>
+						<p class="post-footer item" id="dislikes{{post.id}}">Dislikes: {{post.dislikes_amount}}</p>
 						<p class="post-footer item">Was published: {{post.pub_date}}</p>
 					</div>
 					<a href="{% url 'post' post.id %}" class="write-post">Detail...</a>
