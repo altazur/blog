@@ -23,13 +23,13 @@
 		<p>{{comment.text}}<p>
 		<div class="post-footer">
 			{% if user.is_authenticated %}
-				<button class="like">+</button>
+			<button class="like" id="like{{comment.id}}" data-commentid="{{comment.id}}" type="button">+</button>
 			{% endif %}
-			<p class="post-footer item">Likes: {{comment.likes_amount}}</p>
+			<p class="post-footer item" id="likes{{comment.id}}">Likes: {{comment.likes_amount}}</p>
 			{% if user.is_authenticated %}
-				<button class="dislike">-</button>
+			<button class="dislike" id="dislike{{comment.id}}" data-commentid="{{comment.id}}" type="button">-</button>
 			{% endif %}
-			<p class="post-footer item">Dislikes: {{comment.dislikes_amount}}</p>
+			<p class="post-footer item" id="dislikes{{comment.id}}">Dislikes: {{comment.dislikes_amount}}</p>
 			<p class="post-footer item">Was published: {{comment.pub_date}}</p>
 		</div>
 	</div>
@@ -45,4 +45,3 @@
 {%else%}
 <div class="user_warning"><p>Please login to write comments</p></div>
 {%endif%}
-
