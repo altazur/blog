@@ -29,11 +29,13 @@
 			{% if user.is_authenticated %}
 			<button class="like" id="like{{comment.id}}" data-id="{{comment.id}}" type="button">+</button>
 			{% endif %}
-			<p class="post-footer item" id="likes{{comment.id}}">Likes: {{comment.likes_amount}}</p>
+			<p class="post-footer item">Likes: </p>
+			<p class="post-footer item" id="likes{{comment.id}}">{{comment.likes_amount}}</p>
 			{% if user.is_authenticated %}
 			<button class="dislike" id="dislike{{comment.id}}" data-id="{{comment.id}}" type="button">-</button>
 			{% endif %}
-			<p class="post-footer item" id="dislikes{{comment.id}}">Dislikes: {{comment.dislikes_amount}}</p>
+			<p class="post-footer item">Dislikes: </p>
+			<p class="post-footer item" id="dislikes{{comment.id}}">{{comment.dislikes_amount}}</p>
 			<p class="post-footer item">Was published: {{comment.pub_date}}</p>
 		</div>
 	</div>
