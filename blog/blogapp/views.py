@@ -19,9 +19,19 @@ class HomeView(generic.ListView):
     def get_queryset(self):
         return Post.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:10]
 
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context['post_likes'] = PostLike.objects.filter(user=self.request.user.id)
+        context['post_dislikes'] = PostDislike.objects.filter(user=self.request.user.id)
+        return context
+
 def post_view(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments = post.comment_set.filter(pub_date__lte=timezone.now()).order_by('-pub_date')
+    # Receiveing all likes for current user 
+    comment_likes = CommentLike.objects.filter(user=request.user.id)
+    # Receiving all dislikes for current user
+    comment_dislikes = CommentDislike.objects.filter(user=request.user.id)
     if request.method=='POST':
         input_text = request.POST.get('input_text')
         if input_text != "":
@@ -30,9 +40,9 @@ def post_view(request, post_id):
             return HttpResponseRedirect('') 
         else:
             messages.add_message(request, messages.WARNING, "Empty comment can't be added")
-            return render(request, 'blogapp/post.html', {'post':post, 'comments':comments})
+            return render(request, 'blogapp/post.html', {'post':post, 'comments':comments, 'comment_likes': comment_likes, 'comment_dislikes': comment_dislikes})
     else:
-        return render(request, 'blogapp/post.html', {'post':post, 'comments':comments})
+        return render(request, 'blogapp/post.html', {'post':post, 'comments':comments, 'comment_likes':comment_likes, 'comment_dislikes':comment_dislikes})
 
 def create_post(request):
     if request.method=='POST':
