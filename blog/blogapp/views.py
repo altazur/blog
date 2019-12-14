@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Comment
+from .models import Post, Comment, PostLike, CommentLike, PostDislike, CommentDislike
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -63,38 +63,58 @@ class Register(generic.CreateView):
 def like_post(request):
     if request.method == 'GET':
         post_id = request.GET['post_id']
+        user_id = request.user.id
     if post_id is not None:
+        if PostLike.objects.filter(post=post_id, user=user_id):
+            return
         post = Post.objects.get(pk=post_id)
+        user = request.user
         post.likes_add(post.id, 1)
         post.refresh_from_db()
+        PostLike.objects.create(post=post, user=user)
     return HttpResponse(post.likes_amount)
 
 @login_required
 def dislike_post(request):
     if request.method == 'GET':
         post_id = request.GET['post_id']
+        user_id = request.user.id
     if post_id is not None:
+        if PostDislike.objects.filter(post=post_id, user=user_id):
+            return
         post = Post.objects.get(pk=post_id)
+        user = request.user
         post.dislikes_add(post.id, 1)
         post.refresh_from_db()
-    return HttpResponse(post.likes_amount)
+        PostDislike.objects.create(post=post, user=user)
+    return HttpResponse(post.dislikes_amount)
 
 @login_required
 def like_comment(request):
     if request.method == 'GET':
         comment_id = request.GET['comment_id']
+        user_id = request.user.id
     if comment_id is not None:
+        if CommentLike.objects.filter(comment=comment_id, user=user_id):
+            return
         comment = Comment.objects.get(pk=comment_id)
+        user = request.user
         comment.likes_add(comment.id, 1)
         comment.refresh_from_db()
+        CommentLike.objects.create(comment=comment, user=user)
     return HttpResponse(comment.likes_amount)
 
 @login_required
 def dislike_comment(request):
     if request.method == 'GET':
         comment_id = request.GET['comment_id']
+        user_id = request.user.id
     if comment_id is not None:
+        if CommentDislike.objects.filter(comment=comment_id, user=user_id):
+            return
         comment = Comment.objects.get(pk=comment_id)
+        user = request.user
         comment.dislikes_add(comment.id, 1)
         comment.refresh_from_db()
+        CommentDislike.objects.create(comment=comment, user=user)
     return HttpResponse(comment.dislikes_amount)
