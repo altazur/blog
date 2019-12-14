@@ -8,13 +8,13 @@ $(document).ready(function(){
 		if (element_type == 'post'){
 			$.get('/dislikepost/', {post_id: element_id}, function(data){
 				$('#dislikes'+element_id).html(data);
-				$('#dislike'+element_id).hide();
+				$('#dislike'+element_id).prop("disabled", true);
 		});
 		}
 		else if (element_type == 'comment'){
 			$.get('/dislikecomment/', {comment_id: element_id}, function(data){
 				$('#dislikes'+element_id).html(data);
-				$('#dislike'+element_id).hide();
+				$('#dislike'+element_id).prop("disabled", true);
 		});
 
 		}
