@@ -72,3 +72,35 @@ class Comment(models.Model):
         if comment_id is not None and amount > 0:
             self.dislikes_amount = F('dislikes_amount')+amount
             self.save()
+
+class PostLike(models.Model):
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(f"User: {self.user.username}, post: {self.post.id}")
+    
+class PostDislike(models.Model):
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(f"User: {self.user.username}, post: {self.post.id}")
+    
+class CommentLike(models.Model):
+
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(f"User: {self.user.username}, comment_id: {self.comment.id}")
+
+class CommentDislike(models.Model):
+
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(f"User: {self.user.username}, comment_id: {self.comment.id}")
