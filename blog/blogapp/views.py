@@ -65,7 +65,7 @@ def like_post(request):
         post_id = request.GET['post_id']
         user_id = request.user.id
     if post_id is not None:
-        if PostLike.objects.filter(post=post_id, user=user_id):
+        if PostLike.objects.filter(post=post_id, user=user_id):  # Check whether usr is already liked the post
             return
         post = Post.objects.get(pk=post_id)
         user = request.user
@@ -80,7 +80,7 @@ def dislike_post(request):
         post_id = request.GET['post_id']
         user_id = request.user.id
     if post_id is not None:
-        if PostDislike.objects.filter(post=post_id, user=user_id):
+        if PostDislike.objects.filter(post=post_id, user=user_id):  # Check whether user is already dislike that post
             return
         post = Post.objects.get(pk=post_id)
         user = request.user
@@ -95,7 +95,7 @@ def like_comment(request):
         comment_id = request.GET['comment_id']
         user_id = request.user.id
     if comment_id is not None:
-        if CommentLike.objects.filter(comment=comment_id, user=user_id):
+        if CommentLike.objects.filter(comment=comment_id, user=user_id):  # Check whether user is already liked the comment
             return
         comment = Comment.objects.get(pk=comment_id)
         user = request.user
@@ -110,7 +110,7 @@ def dislike_comment(request):
         comment_id = request.GET['comment_id']
         user_id = request.user.id
     if comment_id is not None:
-        if CommentDislike.objects.filter(comment=comment_id, user=user_id):
+        if CommentDislike.objects.filter(comment=comment_id, user=user_id):  # Chech whether user is already disliked the comment
             return
         comment = Comment.objects.get(pk=comment_id)
         user = request.user
