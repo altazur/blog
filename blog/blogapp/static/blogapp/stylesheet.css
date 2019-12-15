@@ -56,6 +56,14 @@ a.write-post:hover, a.write-post:active{
 	font-size: 30;
 }
 
+.like:hover, .dislike:hover{
+	background-color: #d966ff;
+}
+
+.like:disabled, .dislike:disabled{
+	background-color: #c1affb;
+}
+
 .comment{
 	border-style: solid;
 	margin: 10px;
