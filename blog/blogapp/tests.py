@@ -249,7 +249,7 @@ class LikesTest(TestCase):
         post.refresh_from_db()
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Likes: 256")
+        self.assertContains(response, "256")
 
     def test_comment_likes_view(self):
         """Assert that postview contains right amount of likes for comment"""
@@ -260,7 +260,7 @@ class LikesTest(TestCase):
         comment.refresh_from_db()
         response = self.client.get(f"/{post.id}/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Likes: 999")
+        self.assertContains(response, "999")
 
 class DislikesTest(TestCase):
 
@@ -343,7 +343,7 @@ class DislikesTest(TestCase):
         post.refresh_from_db()
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Dislikes: 256")
+        self.assertContains(response, "256")
 
     def test_comment_dislikes_view(self):
         """Assert that postview contains right amount of dislikes for comment"""
@@ -354,4 +354,4 @@ class DislikesTest(TestCase):
         comment.refresh_from_db()
         response = self.client.get(f"/{post.id}/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Dislikes: 999")
+        self.assertContains(response, "999")
