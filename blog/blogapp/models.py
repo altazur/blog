@@ -40,6 +40,10 @@ class Post(models.Model):
             self.dislikes_amount = F('dislikes_amount')+amount
             self.save()
 
+    def get_post_short_text(self):
+        return f"{self.text[:56]}..."
+    get_post_short_text.short_description = "Text"
+
 class Comment(models.Model):
     text = models.TextField(max_length=256, blank=False)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
