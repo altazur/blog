@@ -11,7 +11,7 @@ Despite the name this web app is a simple "post-comment" web app which can be us
 <li>admin panel based on django admin panel with some useful tweaks</li>
 <li>DB model</li>
 <li>unit tests</li>
-<h3>Stack</h3>
+<h3>Using</h3>
 <li>Python 3.6</li>
 <li>Django 1.11.11</li>
 <li>jQuery 1.11.1</li>
