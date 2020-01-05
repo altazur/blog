@@ -11,7 +11,7 @@ $(document).ready(function(){
 				// Change button colors due to state
 				// .css didn't work for me
 				like_element = $('#dislike'+element_id)
-				if (like_element.attr("style") == "background-color: #c1affb;" || like_element.attr("style") == "background-color: rgb(193, 175, 251);")  // Add or operator because django template generated RGB from hashcolor somehow
+				if (like_element.attr("style") == "background-color: #c1affb" || like_element.attr("style") == "background-color: rgb(193, 175, 251);")  // Add or operator because django template generated RGB from hashcolor somehow
 				{
 					like_element.prop("style", "");
 				}
@@ -27,7 +27,7 @@ $(document).ready(function(){
 				// Change button colors due to state
 				// .css didn't work for me
 				like_element = $('#dislike'+element_id)
-				if (like_element.attr("style") == "background-color: #c1affb;" || like_element.attr("style") == "background-color: rgb(193, 175, 251);")
+				if (like_element.attr("style") == "background-color: #c1affb" || like_element.attr("style") == "background-color: rgb(193, 175, 251);")
 				{
 					like_element.prop("style", ""); 
 				}
