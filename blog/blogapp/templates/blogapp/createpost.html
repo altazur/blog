@@ -1,6 +1,6 @@
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'blogapp/stylesheet.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blogapp/css/stylesheet.css' %}" />
 {% if error_message %}<p>{{ error_message }}</p>{% endif %}
 <div class="header">
 	{% if user.is_authenticated %}
