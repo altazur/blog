@@ -57,7 +57,7 @@ a.write-post:hover, a.write-post:active{
 }
 
 .like:hover, .dislike:hover{
-	background-color: #d966ff;
+	background-color: #d966ff !important;
 }
 
 .comment{
