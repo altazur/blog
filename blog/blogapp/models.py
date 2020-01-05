@@ -29,14 +29,14 @@ class Post(models.Model):
 
     def likes_add(self, post_id, amount):
         """Function changes likes of given amount """
-        if post_id is not None and amount > 0:
+        if post_id is not None:
             #Using 'F' to prevent race
             self.likes_amount = F('likes_amount')+amount
             self.save()
 
     def dislikes_add(self, post_id, amount):
         """Function change dislikes of given post with amount"""
-        if post_id is not None and amount > 0:
+        if post_id is not None:
             self.dislikes_amount = F('dislikes_amount')+amount
             self.save()
 
@@ -67,13 +67,13 @@ class Comment(models.Model):
 
     def likes_add(self, comment_id, amount):
         """Function changes likes of given amount """
-        if comment_id is not None and amount > 0:
+        if comment_id is not None:
             self.likes_amount = F('likes_amount')+amount
             self.save()
 
     def dislikes_add(self, comment_id, amount):
         """Function change dislikes of given comment with amount"""
-        if comment_id is not None and amount > 0:
+        if comment_id is not None:
             self.dislikes_amount = F('dislikes_amount')+amount
             self.save()
 
