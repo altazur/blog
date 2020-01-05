@@ -205,22 +205,22 @@ class LikesTest(TestCase):
         self.assertEqual(comment.likes_amount, comment_likes_before)
 
     def test_neg_likes_to_post(self):
-        """Adding negative likes to post. Assert that likes aren't changed"""
+        """Adding negative likes to post. Assert that likes are decreased"""
         """This test is pass even witn placeholder func"""
         post = prepare_quick_post()
         post_likes_before = post.likes_amount
         post.likes_add(post.id, -99)
         post.refresh_from_db()
-        self.assertEqual(post.likes_amount, post_likes_before)
+        self.assertEqual(post.likes_amount, post_likes_before-99)
 
     def test_neg_likes_to_comment(self):
-        """Adding negative likes to comment. Assert that likes aren't changed"""
+        """Adding negative likes to comment. Assert that likes are decreased"""
         """This test is pass even witn placeholder func"""
         comment = prepare_quick_comment()
         comment_likes_before = comment.likes_amount
         comment.likes_add(comment.id, -5)
         comment.refresh_from_db()
-        self.assertEqual(comment.likes_amount, comment_likes_before)
+        self.assertEqual(comment.likes_amount, comment_likes_before-5)
 
     def test_big_likes_to_post(self):
         """Adding huge numbers of likes to post. Assert that likes amount is changed correctly"""
@@ -299,22 +299,20 @@ class DislikesTest(TestCase):
         self.assertEqual(comment.dislikes_amount, comment_dislikes_before)
 
     def test_neg_dislikes_to_post(self):
-        """Adding negative dislikes to post. Assert that likes aren't changed"""
-        """This test is pass even witn placeholder func"""
+        """Adding negative dislikes to post. Assert that likes are decreased"""
         post = prepare_quick_post()
         post_dislikes_before = post.likes_amount
         post.dislikes_add(post.id, -99)
         post.refresh_from_db()
-        self.assertEqual(post.dislikes_amount, post_dislikes_before)
+        self.assertEqual(post.dislikes_amount, post_dislikes_before-99)
 
     def test_neg_dislikes_to_comment(self):
-        """Adding negative dislikes to comment. Assert that likes aren't changed"""
-        """This test is pass even witn placeholder func"""
+        """Adding negative dislikes to comment. Assert that likes are decreased"""
         comment = prepare_quick_comment()
         comment_dislikes_before = comment.likes_amount
         comment.dislikes_add(comment.id, -5)
         comment.refresh_from_db()
-        self.assertEqual(comment.dislikes_amount, comment_dislikes_before)
+        self.assertEqual(comment.dislikes_amount, comment_dislikes_before-5)
 
     def test_big_dislikes_to_post(self):
         """Adding huge numbers of dislikes to post. Assert that likes amount is changed correctly"""

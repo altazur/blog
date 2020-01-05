@@ -73,58 +73,78 @@ class Register(generic.CreateView):
 def like_post(request):
     if request.method == 'GET':
         post_id = request.GET['post_id']
-        user_id = request.user.id
-    if post_id is not None:
-        if PostLike.objects.filter(post=post_id, user=user_id):  # Check whether usr is already liked the post
-            return
-        post = Post.objects.get(pk=post_id)
         user = request.user
-        post.likes_add(post.id, 1)
-        post.refresh_from_db()
-        PostLike.objects.create(post=post, user=user)
-    return HttpResponse(post.likes_amount)
+        user_id = user.id
+    if post_id is not None:
+        post = Post.objects.get(pk=post_id)
+        post_like_item = PostLike.objects.filter(post=post_id, user=user_id)
+        if post_like_item:  # Check whether usr is already liked the post
+            post.likes_add(post.id, -1)
+            post.refresh_from_db()
+            post_like_item.delete()
+            return HttpResponse(post.likes_amount)
+        else:
+            post.likes_add(post.id, 1)
+            post.refresh_from_db()
+            PostLike.objects.create(post=post, user=user)
+            return HttpResponse(post.likes_amount)
 
 @login_required
 def dislike_post(request):
     if request.method == 'GET':
         post_id = request.GET['post_id']
-        user_id = request.user.id
-    if post_id is not None:
-        if PostDislike.objects.filter(post=post_id, user=user_id):  # Check whether user is already dislike that post
-            return
-        post = Post.objects.get(pk=post_id)
         user = request.user
-        post.dislikes_add(post.id, 1)
-        post.refresh_from_db()
-        PostDislike.objects.create(post=post, user=user)
-    return HttpResponse(post.dislikes_amount)
+        user_id = user.id
+    if post_id is not None:
+        post = Post.objects.get(pk=post_id)
+        post_dislike_item = PostDislike.objects.filter(post=post_id, user=user_id)
+        if post_dislike_item:  # Check whether user is already dislike that post
+            post.dislikes_add(post.id, -1)
+            post.refresh_from_db()
+            post_dislike_item.delete()
+            return HttpResponse(post.dislikes_amount)
+        else:
+            post.dislikes_add(post.id, 1)
+            post.refresh_from_db()
+            PostDislike.objects.create(post=post, user=user)
+            return HttpResponse(post.dislikes_amount)
 
 @login_required
 def like_comment(request):
     if request.method == 'GET':
         comment_id = request.GET['comment_id']
-        user_id = request.user.id
-    if comment_id is not None:
-        if CommentLike.objects.filter(comment=comment_id, user=user_id):  # Check whether user is already liked the comment
-            return
-        comment = Comment.objects.get(pk=comment_id)
         user = request.user
-        comment.likes_add(comment.id, 1)
-        comment.refresh_from_db()
-        CommentLike.objects.create(comment=comment, user=user)
-    return HttpResponse(comment.likes_amount)
+        user_id = user.id
+    if comment_id is not None:
+        comment = Comment.objects.get(pk=comment_id)
+        comment_like_item = CommentLike.objects.filter(comment=comment_id, user=user_id)
+        if comment_like_item:  # Check whether user is already liked the comment
+            comment.likes_add(comment.id, -1)
+            comment.refresh_from_db()
+            comment_like_item.delete()
+            return HttpResponse(comment.likes_amount)
+        else:
+            comment.likes_add(comment.id, 1)
+            comment.refresh_from_db()
+            CommentLike.objects.create(comment=comment, user=user)
+            return HttpResponse(comment.likes_amount)
 
 @login_required
 def dislike_comment(request):
     if request.method == 'GET':
         comment_id = request.GET['comment_id']
-        user_id = request.user.id
-    if comment_id is not None:
-        if CommentDislike.objects.filter(comment=comment_id, user=user_id):  # Chech whether user is already disliked the comment
-            return
-        comment = Comment.objects.get(pk=comment_id)
         user = request.user
-        comment.dislikes_add(comment.id, 1)
-        comment.refresh_from_db()
-        CommentDislike.objects.create(comment=comment, user=user)
-    return HttpResponse(comment.dislikes_amount)
+        user_id = user.id
+    if comment_id is not None:
+        comment = Comment.objects.get(pk = comment_id)
+        comment_dislike_item = CommentDislike.objects.filter(comment=comment_id, user=user_id)
+        if comment_dislike_item:  # Chech whether user is already disliked the comment
+            comment.dislikes_add(comment.id, -1)
+            comment.refresh_from_db()
+            comment_dislike_item.delete()
+            return HttpResponse(comment.dislikes_amount)
+        else:
+            comment.dislikes_add(comment.id, 1)
+            comment.refresh_from_db()
+            CommentDislike.objects.create(comment=comment, user=user)
+            return HttpResponse(comment.dislikes_amount)

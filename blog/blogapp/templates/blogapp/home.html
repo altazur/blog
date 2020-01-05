@@ -36,12 +36,12 @@
 						{% endfor %}</p>
 					<div class="post-footer">
 						{% if user.is_authenticated %}
-						<button class="like" id="like{{post.id}}" data-id="{{ post.id }}" type="button" {%if post_likes%}{%for like in post_likes%}{%if like.post.id == post.id%}disabled="true"{%endif%}{%endfor%}{%endif%}>+</button>
+						<button class="like" id="like{{post.id}}" data-id="{{ post.id }}" type="button" {%if post_likes%}{%for like in post_likes%}{%if like.post.id == post.id%}style="background-color: #c1affb"{%endif%}{%endfor%}{%endif%}>+</button>
 						{% endif %}
 						<p class="post-footer item">Likes: </p>
 						<p class="post-footer item" id="likes{{post.id}}">{{post.likes_amount}}</p>
 						{% if user.is_authenticated %}
-							<button class="dislike" id="dislike{{post.id}}" data-id="{{ post.id }}" type="button" {%if post_dislikes%}{%for dislike in post_dislikes%}{%if dislike.post.id == post.id%}disabled="true"{%endif%}{%endfor%}{%endif%}>-</button>
+							<button class="dislike" id="dislike{{post.id}}" data-id="{{ post.id }}" type="button" {%if post_dislikes%}{%for dislike in post_dislikes%}{%if dislike.post.id == post.id%}style="background-color: #c1affb"{%endif%}{%endfor%}{%endif%}>-</button>
 						{% endif %}
 						<p class="post-footer item">Dislikes: </p>
 						<p class="post-footer item" id="dislikes{{post.id}}">{{post.dislikes_amount}}</p>
