@@ -13,7 +13,6 @@ from django.contrib import messages
 # Create your views here.
 
 class HomeView(generic.ListView):
-    paginate_by = 10
     template_name = 'blogapp/home.html'
     context_object_name = 'latest_post_list'
 
