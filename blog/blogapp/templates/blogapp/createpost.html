@@ -1,6 +1,13 @@
 {% load static %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'blogapp/css/stylesheet.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blogapp/css/jquery.emojipicker.css' %}" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+<script src="{% static 'blogapp/js/jquery.emojipicker.js' %}"></script>
+<link rel="stylesheet" href="{% static 'blogapp/css/jquery.emojipicker.tw.css' %}" />
+<script src="{% static 'blogapp/js/jquery.emojis.js' %}"></script>
+<script src="{% static 'blogapp/js/emoji.js' %}"></script>
+
 {% if error_message %}<p>{{ error_message }}</p>{% endif %}
 <div class="header">
 	{% if user.is_authenticated %}
@@ -13,8 +20,7 @@
 </div>
 <form method="post">
 	{% csrf_token %}
-	<div class="textinput"><textarea maxlength="512" name="input_text" rows="50" cols="100"/>Enter post here...</textarea></div>
+	<div class="textinput"><textarea maxlength="512" name="input_text" rows="50" cols="100" class="emoji"/>Enter post here...</textarea></div>
 	<input type="text" maxlength="256" name="tags"/>
 	<input type="submit" value="Post"/> 
 </form>
-	
