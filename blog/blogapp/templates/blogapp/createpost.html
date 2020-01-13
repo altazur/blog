@@ -18,6 +18,9 @@
 	<a href="{% url 'register' %}">Register</a>
 	{% endif %}
 </div>
+<div class="breadcrumbs">
+	<a href="{% url 'home' %}">Home</a>
+</div>
 <form method="post">
 	{% csrf_token %}
 	<div class="textinput"><textarea maxlength="512" name="input_text" rows="10" cols="100" class="emoji"/>Enter post here...</textarea></div>
