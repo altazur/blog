@@ -1,10 +1,15 @@
 {% load static %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'blogapp/css/stylesheet.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blogapp/css/jquery.emojipicker.css' %}" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="{% static 'blogapp/js/jquery.emojipicker.js' %}"></script>
+<link rel="stylesheet" href="{% static 'blogapp/css/jquery.emojipicker.tw.css' %}" />
+<script src="{% static 'blogapp/js/jquery.emojis.js' %}"></script>
 <script src="{% static 'blogapp/js/like.js' %}"></script>
 <script src="{% static 'blogapp/js/dislike.js' %}"></script>
+<script src="{% static 'blogapp/js/emoji.js' %}"></script>
 
-<link rel="stylesheet" type="text/css" href="{% static 'blogapp/css/stylesheet.css' %}" />
 {% if messages %}
 	<ul class="messages">
 		{%for message in messages %}
@@ -12,6 +17,7 @@
 		{% endfor %}
 	</ul>
 {%endif%}	
+
 <div class="header">
 	{% if user.is_authenticated %}
 	<p>Hi, {{ user.username }}</p>
@@ -20,6 +26,9 @@
 	<a href="{% url 'login' %}">Login</a>
 	<a href="{% url 'register' %}">Register</a>
 	{% endif %}
+</div>
+<div class="breadcrumbs">
+	<a href="{% url 'home' %}">Home</a>
 </div>
 <p>{{ post.text }}</p>
 {% for comment in comments%}
@@ -44,7 +53,7 @@
 <div class="comment_create">
 	<form method="post">
 		{% csrf_token %}
-		<input type="text" maxlength="256"  name="input_text">
+		<textarea maxlength="256" name="input_text" class="emoji" rows="5" cols="50"/></textarea>
 		<input type="submit" value="Comment">
 	</form>
 </div>
