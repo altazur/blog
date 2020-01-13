@@ -7,6 +7,7 @@ Despite the name this web app is a simple "post-comment" web app which can be us
 <li>posts on home page</li>
 <li>comments for every post</li>
 <li>likes and dislikes made with jQuery</li>
+<li>emojis by adding jQuery <a href="https://github.com/wedgies/jquery-emoji-picker">emojipicker</a><li>
 <li>tags for every post</li>
 <li>admin panel based on django admin panel with some useful tweaks</li>
 <li>DB model</li>
