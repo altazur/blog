@@ -1,6 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
-from .tests_unit import create_user
+from .utils import create_user
 
 class LoginTest(StaticLiveServerTestCase):
 
