@@ -1,5 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
+from .tests_unit import create_user
 
 class LoginTest(StaticLiveServerTestCase):
 
@@ -9,6 +10,7 @@ class LoginTest(StaticLiveServerTestCase):
         super(LoginTest, cls).setUpClass()
         cls.selenium = WebDriver(executable_path="./blogapp/tests/webdriver/geckodriver")
         cls.selenium.implicitly_wait(10)
+        create_user()
         
     @classmethod
     def tearDownClass(cls):
@@ -21,7 +23,6 @@ class LoginTest(StaticLiveServerTestCase):
         """
         1. Open home page
         2. Click 'login' link
-        3. Assert page is 'login'
         4. Enter valid login name
         5. Enter valid pass
         6. Click 'login'
@@ -30,4 +31,10 @@ class LoginTest(StaticLiveServerTestCase):
         """
         driver = self.selenium
         driver.get(self.live_server_url)
-        assert 'Home' in driver.title
+        driver.find_element_by_link_text("Login").click()
+        driver.find_element_by_id("id_username").send_keys("Test")
+        driver.find_element_by_id("id_password").send_keys("test")
+        driver.find_element_by_tag_name("button").click()
+        welcome_text = driver.find_element_by_xpath("//*[@class=\"header\"]/p").text
+        assert "Test" in welcome_text
+        
