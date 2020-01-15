@@ -1,8 +1,4 @@
 from django.test import TestCase
-import datetime
-from blogapp.models import Post, Comment
-from django.contrib.auth.models import User
-from django.utils import timezone
 from django.urls import reverse
 from .utils import create_user, create_post, create_comment
 
