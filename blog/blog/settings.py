@@ -18,15 +18,24 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL='/'
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'bt21e&m&e9g^=glm3*@a7v5ick3!l*cizkewgwq9!+spo+sn+c'
+SECRET_KEY = os.environ['BLOGAPP_SECRET'] 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+SECURE_BROWSER_XSS_FILTER = True
+
+SESSION_COOKIE_SECURE = True
+
+CSRF_COOKIE_SECURE = True
+
+X_FRAME_OPTIONS = 'DENY'
 
 ALLOWED_HOSTS = []
 
